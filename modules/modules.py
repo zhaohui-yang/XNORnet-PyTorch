@@ -35,7 +35,6 @@ class XNORConv2d(nn.Module):
         if self.dropout_ratio!=0:
             x = self.dropout(x)
         mean_val = self.full_precision.abs().view(self.out_channels, -1).mean(1)
-        mean_val = mean_val.view(1, self.out_channels, 1, 1)
         self.mean_val = mean_val.view(-1)
 
         self.conv.weight.data.copy_(self.full_precision.data.sign() * self.mean_val.view(-1, 1, 1, 1))
@@ -45,7 +44,6 @@ class XNORConv2d(nn.Module):
     def copy_grad(self):
         proxy = self.full_precision.abs().sign()
         proxy[self.full_precision.data.abs()>1] = 0
-
         binary_grad = self.conv.weight.grad * self.mean_val.view(-1, 1, 1, 1) * proxy
 
         mean_grad = self.conv.weight.data.sign() * self.conv.weight.grad
@@ -73,7 +71,6 @@ class XNORLinear(nn.Module):
         if self.dropout_ratio != 0:
             x = self.dropout(x)
         mean_val = self.full_precision.abs().view(self.out_features, -1).mean(1)
-        mean_val = mean_val.view(self.out_features)
         self.mean_val = mean_val
 
         self.linear.weight.data.copy_(self.full_precision.data.sign() * mean_val.view(-1, 1))

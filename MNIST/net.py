@@ -31,6 +31,5 @@ class LeNet5(nn.Module):
         x = self.bn3(x)
         x = x.view(-1, 50*4*4)
         x = F.relu(self.bin_fc1(x))
-        x = F.relu(self.fc2(x))
-        x = F.log_softmax(x, dim = 1)
+        x = self.fc2(x)
         return x

@@ -12,6 +12,7 @@ def countParams(state_dict):
                 continue
             if 'weight' in key:
                 params_1 += state_dict[key].nelement()
+                params_32 += state_dict[key].size(0)
             if 'bias' in key:
                 params_32 += state_dict[key].nelement()
         else:
@@ -26,6 +27,7 @@ def countSize(state_dict):
                 continue
             if 'weight' in key:
                 size += state_dict[key].nelement() / 8
+                size += state_dict[key].size(0) * 4
             if 'bias' in key:
                 size += state_dict[key].nelement() * 4
         else:
