@@ -4,9 +4,9 @@
 
 ```
 
-|Dataset| Network | 1bit | 32bit | Accuracy of XNOR | Acc of 32bit|
-|-------|---------|------|-------|------------------|-------------|
-|MNIST  | LeNet5  | 0.425| 0.007 | 99.21            | 99.34       |
+|Dataset| Network | 1bit | 32bit | Acc of XNOR | Acc of 32bit|
+|-------|---------|------|-------|-------------|-------------|
+|MNIST  | LeNet5  | 0.425| 0.007 | 99.21       | 99.34       |
 ```
 
 ### Implementation
