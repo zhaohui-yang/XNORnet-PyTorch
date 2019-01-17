@@ -58,13 +58,13 @@ def main():
     # Training settings
     parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
     parser.add_argument('--batch-size', type=int, default=128, metavar='N',
-                        help='input batch size for training (default: 64)')
+                        help='input batch size for training (default: 128)')
     parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                         help='input batch size for testing (default: 1000)')
-    parser.add_argument('--epochs', type=int, default=60, metavar='N',
+    parser.add_argument('--epochs', type=int, default=80, metavar='N',
                         help='number of epochs to train (default: 10)')
-    parser.add_argument('--lr', type=float, default=0.1, metavar='LR',
-                        help='learning rate (default: 0.1)')
+    parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
+                        help='learning rate (default: 0.01)')
     parser.add_argument('--momentum', type=float, default=0.9, metavar='M',
                         help='SGD momentum (default: 0.9)')
     parser.add_argument('--no-cuda', action='store_true', default=False,
@@ -104,7 +104,7 @@ def main():
     #optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = 1e-5)
     optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay = 1e-5)
 
-    decay_epochs = [15, 30, 45]
+    decay_epochs = [20, 40, 60]
     max_acc = 0
     
     countSize(model.state_dict())
