@@ -4,10 +4,19 @@ import torch.nn.functional as F
 import torchvision
 
 def countParams(state_dict):
-    params = 0
+    params_32 = 0
+    params_1 = 0
     for key in state_dict.keys():
-        params += state_dict[key].nelement()
-    return params
+        if 'bin' in key:
+            if 'full_precision' in key:
+                continue
+            if 'weight' in key:
+                params_1 += state_dict[key].nelement()
+            if 'bias' in key:
+                params_32 += state_dict[key].nelement()
+        else:
+            params_32 += state_dict[key].nelement()
+    return params_1, params_32
 
 def countSize(state_dict):
     size = 0

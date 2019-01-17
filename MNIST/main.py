@@ -6,6 +6,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms
 
+import init
 import time
 from net import *
 from utils import *
@@ -56,16 +57,16 @@ def test(args, model, device, test_loader):
 def main():
     # Training settings
     parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
-    parser.add_argument('--batch-size', type=int, default=1000, metavar='N',
+    parser.add_argument('--batch-size', type=int, default=128, metavar='N',
                         help='input batch size for training (default: 64)')
     parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                         help='input batch size for testing (default: 1000)')
-    parser.add_argument('--epochs', type=int, default=0, metavar='N',
+    parser.add_argument('--epochs', type=int, default=60, metavar='N',
                         help='number of epochs to train (default: 10)')
     parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
                         help='learning rate (default: 0.01)')
-    parser.add_argument('--momentum', type=float, default=0.5, metavar='M',
-                        help='SGD momentum (default: 0.5)')
+    parser.add_argument('--momentum', type=float, default=0.9, metavar='M',
+                        help='SGD momentum (default: 0.9)')
     parser.add_argument('--no-cuda', action='store_true', default=False,
                         help='disables CUDA training')
     parser.add_argument('--seed', type=int, default=1, metavar='S',
@@ -84,14 +85,14 @@ def main():
 
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('./data', train=True, download=True,
+        datasets.MNIST('../../data', train=True, download=True,
                        transform=transforms.Compose([
                            transforms.ToTensor(),
                            transforms.Normalize((0.1307,), (0.3081,))
                        ])),
         batch_size=args.batch_size, shuffle=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('./data', train=False, transform=transforms.Compose([
+        datasets.MNIST('../../data', train=False, transform=transforms.Compose([
                            transforms.ToTensor(),
                            transforms.Normalize((0.1307,), (0.3081,))
                        ])),
@@ -99,9 +100,10 @@ def main():
 
 
     model = LeNet5().to(device)
-    optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum)
+    optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = 1e-5)
+    #optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay = 1e-5)
 
-    decay_epochs = [20, 40]
+    decay_epochs = [15, 30, 45]
     max_acc = 0
     
     countSize(model.state_dict())
@@ -113,11 +115,11 @@ def main():
         if acc > max_acc:
             max_acc = acc
 
-    params = countParams(model.state_dict())
+    params_1, params_32 = countParams(model.state_dict())
     size = countSize(model.state_dict())
         
     if (args.save_model):
-        torch.save(model.state_dict(),"mnist_lenet5_acc={}_params={:.3f}M_size={:.3f}M_time{}.pth".format(max_acc, params / 1e6, size / 1e6, int(time.time()%100)))
+        torch.save(model.state_dict(),"mnist__lenet5__acc{}__{:.3f}M1bit__{:.3f}M32bit__{:.3f}Mmemory__rnd{}.pth".format(max_acc, params_1 / 1e6, params_32 / 1e6, size / (2**20), int(time.time()%100)))
         
 if __name__ == '__main__':
     main()

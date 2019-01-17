@@ -1,5 +1,7 @@
 import torch
 import torch.nn as nn
+
+import init
 from modules import *
 
 class LeNet5(nn.Module):
@@ -17,16 +19,18 @@ class LeNet5(nn.Module):
             if isinstance(m, nn.BatchNorm2d) or isinstance(m, nn.BatchNorm1d):
                 if hasattr(m.weight, 'data'):
                     m.weight.data.zero_().add_(1.0)
+                    
     def forward(self, x):
         for m in self.modules():
             if isinstance(m, nn.BatchNorm2d) or isinstance(m, nn.BatchNorm1d):
                 if hasattr(m.weight, 'data'):
                     m.weight.data.clamp_(min = 0.01)
+                    
         x = F.max_pool2d(F.relu(self.bn1(self.conv1(x))), 2)
         x = F.max_pool2d(F.relu(self.bin_conv2(self.bn2(x))), 2)
         x = self.bn3(x)
         x = x.view(-1, 50*4*4)
         x = F.relu(self.bin_fc1(x))
-        x = self.fc2(x)
+        x = F.relu(self.fc2(x))
         x = F.log_softmax(x, dim = 1)
         return x
