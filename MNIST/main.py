@@ -63,8 +63,8 @@ def main():
                         help='input batch size for testing (default: 1000)')
     parser.add_argument('--epochs', type=int, default=60, metavar='N',
                         help='number of epochs to train (default: 10)')
-    parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
-                        help='learning rate (default: 0.01)')
+    parser.add_argument('--lr', type=float, default=0.1, metavar='LR',
+                        help='learning rate (default: 0.1)')
     parser.add_argument('--momentum', type=float, default=0.9, metavar='M',
                         help='SGD momentum (default: 0.9)')
     parser.add_argument('--no-cuda', action='store_true', default=False,
@@ -100,8 +100,9 @@ def main():
 
 
     model = LeNet5().to(device)
-    optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = 1e-5)
-    #optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay = 1e-5)
+    print(model)
+    #optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = 1e-5)
+    optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay = 1e-5)
 
     decay_epochs = [15, 30, 45]
     max_acc = 0

@@ -8,7 +8,7 @@
 
 |Dataset| Network | 1bit | 32bit | Accuracy of XNOR | Acc of 32bit|
 |-------|---------|------|-------|------------------|-------------|
-|MNIST  | LeNet5  | 0.425| 0.006 | 99.18            | 99.34       |
+|MNIST  | LeNet5  | 0.425| 0.006 | 99.21            | 99.34       |
 ```
 
 ### Implementation
