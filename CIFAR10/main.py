@@ -63,8 +63,8 @@ def main():
                         help='input batch size for training (default: 128)')
     parser.add_argument('--test-batch-size', type=int, default=1000, metavar='N',
                         help='input batch size for testing (default: 1000)')
-    parser.add_argument('--epochs', type=int, default=80, metavar='N',
-                        help='number of epochs to train (default: 80)')
+    parser.add_argument('--epochs', type=int, default=320, metavar='N',
+                        help='number of epochs to train (default: 320)')
     parser.add_argument('--lr', type=float, default=0.01, metavar='LR',
                         help='learning rate (default: 0.01)')
     parser.add_argument('--momentum', type=float, default=0.9, metavar='M',
@@ -87,26 +87,24 @@ def main():
 
     kwargs = {'num_workers': 1, 'pin_memory': True} if use_cuda else {}
     train_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('../../data', train=True, download=True,
+        datasets.CIFAR10('../../data', train=True, download=True,
                        transform=transforms.Compose([
                            transforms.ToTensor(),
-                           transforms.Normalize((0.1307,), (0.3081,))
                        ])),
         batch_size=args.batch_size, shuffle=True, **kwargs)
     test_loader = torch.utils.data.DataLoader(
-        datasets.MNIST('../../data', train=False, transform=transforms.Compose([
+        datasets.CIFAR10('../../data', train=False, transform=transforms.Compose([
                            transforms.ToTensor(),
-                           transforms.Normalize((0.1307,), (0.3081,))
                        ])),
         batch_size=args.test_batch_size, shuffle=True, **kwargs)
 
 
-    model = LeNet5().to(device)
+    model = NIN().to(device)
     print(model)
     #optimizer = optim.SGD(model.parameters(), lr=args.lr, momentum=args.momentum, weight_decay = 1e-5)
     optimizer = optim.Adam(model.parameters(), lr=args.lr, weight_decay = 1e-5)
 
-    decay_epochs = [20, 40, 60]
+    decay_epochs = [120, 200, 240, 280]
     max_acc = 0
     
     countSize(model.state_dict())
@@ -122,7 +120,7 @@ def main():
     size = countSize(model.state_dict())
         
     if (args.save_model):
-        torch.save(model.state_dict(),"mnist__lenet5__acc{}__{:.3f}M1bit__{:.3f}M32bit__{:.3f}Mmemory__rnd{}.pth".format(max_acc, params_1 / 1e6, params_32 / 1e6, size / (2**20), int(time.time()%100)))
+        torch.save(model.state_dict(),"cifar10__nin__acc{}__{:.3f}M1bit__{:.3f}M32bit__{:.3f}Mmemory__rnd{}.pth".format(max_acc, params_1 / 1e6, params_32 / 1e6, size / (2**20), int(time.time()%100)))
         
 if __name__ == '__main__':
     main()
