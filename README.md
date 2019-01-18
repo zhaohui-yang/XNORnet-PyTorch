@@ -16,10 +16,9 @@
 
 
 
-```
+Pack XNORConv2d and XNORLinear as two modules, you can add them any where you want. Remember to call the following function after ```loss.backward()```
 
-Pack XNORConv2d and XNORLinear as two modules, you can add them any where you want. Remember to call the following function after ```loss.backward()
-```
+
 
 ```python
         for layer in model.children():
