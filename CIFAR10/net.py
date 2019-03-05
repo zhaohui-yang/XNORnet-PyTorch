@@ -58,4 +58,3 @@ class NIN(nn.Module):
         x = F.avg_pool2d(x, kernel_size = 8)
         x = x.squeeze()
         return x
-        return x
