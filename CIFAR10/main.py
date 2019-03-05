@@ -27,7 +27,7 @@ def train(args, model, device, train_loader, optimizer, epoch):
         loss = F.cross_entropy(output, target)
         loss.backward()
         
-        for layer in model.children():
+        for layer in model.modules():
             if isinstance(layer, XNORConv2d) or isinstance(layer, XNORLinear):
                 layer.copy_grad()
                 
