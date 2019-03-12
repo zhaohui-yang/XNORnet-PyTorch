@@ -92,29 +92,29 @@ class XNORLinear(nn.Module):
 class ShiftConv2d(nn.Module):
     def __init__(self, in_channels, out_channels, diff):
         super(ShiftConv2d, self).__init__()
-        self.baseconv = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias = False, groups = in_channels)
+        self.baseconv = nn.Conv2d(in_channels, in_channels, 3, 1, 1, bias = False, groups = in_channels)
         self.baseconv.weight.data.zero_()
         self.baseconv.weight.data[:, :, 1, 1].fill_(1)
 
-        self.leftconv = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias = False, groups = in_channels)
+        self.leftconv = nn.Conv2d(in_channels, in_channels, 3, 1, 1, bias = False, groups = in_channels)
         self.leftconv.weight.data.zero_()
         self.leftconv.weight.data[:, :, 1, 0].fill_(1)
         if diff:
             self.leftconv.weight.data[:, :, 1, 1].fill_(-1)
 
-        self.rightconv = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias = False, groups = in_channels)
+        self.rightconv = nn.Conv2d(in_channels, in_channels, 3, 1, 1, bias = False, groups = in_channels)
         self.rightconv.weight.data.zero_()
         self.rightconv.weight.data[:, :, 0, 1].fill_(1)
         if diff:
             self.leftconv.weight.data[:, :, 1, 1].fill_(-1)
 
-        self.upperconv = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias = False, groups = in_channels)
+        self.upperconv = nn.Conv2d(in_channels, in_channels, 3, 1, 1, bias = False, groups = in_channels)
         self.upperconv.weight.data.zero_()
         self.upperconv.weight.data[:, :, 2, 1].fill_(1)
         if diff:
             self.leftconv.weight.data[:, :, 1, 1].fill_(-1)
 
-        self.lowerconv = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias = False, groups = in_channels)
+        self.lowerconv = nn.Conv2d(in_channels, in_channels, 3, 1, 1, bias = False, groups = in_channels)
         self.lowerconv.weight.data.zero_()
         self.lowerconv.weight.data[:, :, 1, 2].fill_(1)
         if diff:
