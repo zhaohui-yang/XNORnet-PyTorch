@@ -88,10 +88,6 @@ class XNORLinear(nn.Module):
 
         self.full_precision.grad = binary_grad + mean_grad
         self.full_precision.grad = self.full_precision.grad * self.full_precision.data[0].nelement() * (1-1/self.full_precision.data.size(1))
-        
-import torch
-import torch.nn as nn
-import torch.nn.functional as F
 
 class ShiftConv2d(nn.Module):
     def __init__(self, in_channels, out_channels, diff):
