@@ -99,18 +99,26 @@ class ShiftConv2d(nn.Module):
         self.leftconv = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias = False, groups = in_channels)
         self.leftconv.weight.data.zero_()
         self.leftconv.weight.data[:, :, 1, 0].fill_(1)
+        if diff:
+            self.leftconv.weight.data[:, :, 1, 1].fill_(-1)
 
         self.rightconv = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias = False, groups = in_channels)
         self.rightconv.weight.data.zero_()
         self.rightconv.weight.data[:, :, 0, 1].fill_(1)
+        if diff:
+            self.leftconv.weight.data[:, :, 1, 1].fill_(-1)
 
         self.upperconv = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias = False, groups = in_channels)
         self.upperconv.weight.data.zero_()
         self.upperconv.weight.data[:, :, 2, 1].fill_(1)
+        if diff:
+            self.leftconv.weight.data[:, :, 1, 1].fill_(-1)
 
         self.lowerconv = nn.Conv2d(in_channels, out_channels, 3, 1, 1, bias = False, groups = in_channels)
         self.lowerconv.weight.data.zero_()
         self.lowerconv.weight.data[:, :, 1, 2].fill_(1)
+        if diff:
+            self.leftconv.weight.data[:, :, 1, 1].fill_(-1)
 
     def forward(self, x):
         x_base = self.baseconv(x)
